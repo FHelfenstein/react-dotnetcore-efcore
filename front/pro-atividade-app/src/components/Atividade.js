@@ -37,8 +37,8 @@ export default function Atividade(props) {
                 <h6>
                     Prioridade:       
                     <span className={'ms-1 text-'+ prioridadeStyle(props.atv.prioridade)}>
-                    <i className={"me-1 far fa-" + prioridadeStyle(props.atv.prioridade,true)}></i>
-                    {prioridadeLabel(props.atv.prioridade)}
+                      <i className={"me-1 far fa-" + prioridadeStyle(props.atv.prioridade,true)}></i>
+                      {prioridadeLabel(props.atv.prioridade)}
                     </span>                              
                 </h6>
             </div>

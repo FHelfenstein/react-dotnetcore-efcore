@@ -41,12 +41,7 @@ function App() {
     }
     */    
     //atividades.push(atividade);    
-    setAtividades([...atividades, 
-      { 
-        ...ativ, 
-        id: index 
-      }
-    ]);
+    setAtividades([...atividades, { ...ativ, id: index } ]);
   }
 
   function atualizarAtividade(ativ){
