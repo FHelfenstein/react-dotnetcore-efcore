@@ -10,7 +10,7 @@ namespace ProAtividade.API.Models
         public int Id { get; set; }
         public string Titulo { get; set; } = default!;
         public string Descricao { get; set; } = default!;
-        public string Prioridade { get; set; } = default!;
+        public Prioridade Prioridade { get; set; } = default!;
 
         public Atividade() {}
 

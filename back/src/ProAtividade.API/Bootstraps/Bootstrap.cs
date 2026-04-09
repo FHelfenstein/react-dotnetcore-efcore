@@ -1,7 +1,7 @@
-
-
 using System.Reflection;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using ProAtividade.API.Data;
 using ProAtividade.API.Extensions;
 
 namespace ProAtividade.API.Bootstraps;
@@ -10,8 +10,10 @@ public static class Bootstrap
 {
     public static WebApplicationBuilder AddApiServices(this WebApplicationBuilder builder)
     {                        
-        ConfigureSwagger(builder);
+        ConfigureDataBase(builder);
         
+        ConfigureSwagger(builder);
+            
         return builder;    
     }
 
@@ -20,18 +22,10 @@ public static class Bootstrap
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
-            
             app.MapOpenApi();
-
-            // Forçar abrir o swagger , mesmo que o mesmo esteja configurado no arquivo lauchSettings.json
-            var url = "https://localhost:7036/swagger";
-            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
-            {
-                FileName = url,
-                UseShellExecute = true
-            });
-            
+                      
             app.UseSwagger();
+
             app.UseSwaggerUI();            
         }
 
@@ -41,6 +35,20 @@ public static class Bootstrap
                 
         return app;
     }  
+
+    private static void ConfigureDataBase(WebApplicationBuilder builder)
+    {
+        var connectionStringsOptions = new ConnectionStringsOptions();
+        builder.Configuration.GetSection("ConnectionStrings").Bind(connectionStringsOptions);
+
+        var databaseConnection = connectionStringsOptions.DatabaseConnection;
+
+        builder.Services.AddDbContext<DataContext>(options =>
+            options.UseSqlServer(
+                        databaseConnection,
+                        y => y.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery))
+                   .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
+    }
 
     private static void ConfigureSwagger(WebApplicationBuilder builder)
     {
@@ -52,5 +60,10 @@ public static class Bootstrap
         {
             c.SwaggerDoc("v1", new OpenApiInfo { Title = "ProAtividade.API", Version = "v1"});
         });
-    }       
+    }  
+
+    private class ConnectionStringsOptions
+    {
+        public string? DatabaseConnection { get; set; }
+    }     
 }

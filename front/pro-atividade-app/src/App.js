@@ -2,32 +2,21 @@ import './App.css';
 import { useEffect, useState } from 'react';
 import AtividadeForm from './components/AtividadeForm';
 import AtividadeLista from './components/AtividadeLista';
-
-/*
-let initialState = [
-    {
-      id: 1,
-      prioridade: "1",
-      titulo: "Titulo",
-      descricao: "Primeira Atividade",
-    },
-    {
-      id: 2,
-      prioridade: "1",
-      titulo: "Titulo",
-      descricao: "Segunda Atividade",
-    }              
-];
-*/
+import api from './api/atividade';
 
 function App() {
   const [index, setIndex] = useState(0);
   const [atividades, setAtividades] = useState([]);
   const [atividade, setAtividade] = useState({id:0});
 
+  const obterAtividades = () => {
+    const response = api.get('atividade')
+
+    
+  }
+
   useEffect(() => {
-    atividades.length <= 0 ? setIndex(1) :
-    setIndex(Math.max.apply(Math, atividades.map(item => item.id)) + 1);
+    
 
   },[atividades]);
 

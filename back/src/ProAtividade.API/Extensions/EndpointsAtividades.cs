@@ -18,6 +18,8 @@ namespace ProAtividade.API.Extensions
 
             app.MapPut("/api/atividade/{id}", AtividadesHandlers.Put).WithOpenApi();
 
+            app.MapDelete("/api/atividade/{id}", AtividadesHandlers.Delete).WithOpenApi();
+
         }
     }
 }
