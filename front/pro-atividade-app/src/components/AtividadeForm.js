@@ -17,7 +17,7 @@ export default function AtividadeForm(props) {
     
     const inputTextHandler = (e) => {
         const {name, value} = e.target;
-        setAtividade({...atividade, [name]: value});
+        setAtividade({...atividade, [name]: value, [name]: name === "prioridade" ? Number(value) : value });
     }
 
     function atividadeAtual() {
@@ -38,19 +38,18 @@ export default function AtividadeForm(props) {
         }else {
             props.addAtividade(atividade);
         }
-        setAtividade(atividadeInicial);
+        setAtividade(atividadeInicial);        
     }
 
     const handleCancelar = (e) => {
         e.preventDefault();
 
         props.cancelarAtividade()
-        setAtividade(atividadeInicial);
+        setAtividade(atividadeInicial);        
     }
     
     return (  
         <>
-            <h1>Atividade {atividade.id !== 0 ? atividade.id : ''}</h1>
             <form className="row g-3" onSubmit={handleSubmit}>
                 <div className="col-md-6">
                     <label className="form-label">
@@ -76,10 +75,10 @@ export default function AtividadeForm(props) {
                         onChange={inputTextHandler} 
                         value={atividade.prioridade}
                     >
-                        <option defaultValue="0">Selecione...</option>
-                        <option value="1">Baixa</option>
-                        <option value="2">Normal</option>
-                        <option value="3">Alta</option>
+                        <option defaultValue={0}>Selecione...</option>
+                        <option value={1}>Baixa</option>
+                        <option value={2}>Normal</option>
+                        <option value={3}>Alta</option>
                     </select>
                 </div>        
                 <div className="col-md-12">
@@ -99,9 +98,9 @@ export default function AtividadeForm(props) {
                 <div className="col-12 mt-0">
                     {
                         (atividade.id === 0 ? (
-                            <button className="btn btn-outline-secondary me-2" type='submit' >
+                            <button className="btn btn-outline-success me-2" type='submit'>
                                 <i className='fas fa-plus me-2'></i>
-                                Atividade
+                                Salvar
                             </button>
                         ) : 
                         (

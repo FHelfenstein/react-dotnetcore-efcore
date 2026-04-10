@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using ProAtividade.API.Data;
 using ProAtividade.API.Models;
 
@@ -21,13 +17,13 @@ namespace ProAtividade.API.EndpointsHandlers
             return context.Atividades.FirstOrDefault(x => x.Id == id);
         }
 
-        public static IEnumerable<Atividade> Post(Atividade atividade, DataContext context)
+        public static Atividade Post(Atividade atividade, DataContext context)
         {
             
             context.Atividades.Add(atividade);
             
             if (context.SaveChanges() > 0 )
-                return context.Atividades;
+                return atividade;
             else
                 throw new Exception("Você não conseguiu adicionar uma atividade.");    
         }
@@ -39,7 +35,7 @@ namespace ProAtividade.API.EndpointsHandlers
             context.Update(atividade);
 
             if (context.SaveChanges() > 0 )
-                return context.Atividades.FirstOrDefault(x => x.Id == id) ;
+                return atividade ;
             else
                 return new Atividade();
         }
