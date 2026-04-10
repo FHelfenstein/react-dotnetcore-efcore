@@ -8,12 +8,16 @@ namespace ProAtividade.API.Bootstraps;
 
 public static class Bootstrap
 {
+    private const string DefaultCorsPolicyName = "AllowAll";
+
     public static WebApplicationBuilder AddApiServices(this WebApplicationBuilder builder)
     {                        
         ConfigureDataBase(builder);
-        
+              
         ConfigureSwagger(builder);
-            
+
+        ConfigureCors(builder);
+                   
         return builder;    
     }
 
@@ -29,6 +33,10 @@ public static class Bootstrap
             app.UseSwaggerUI();            
         }
 
+        app.UseCors(options => options.AllowAnyOrigin()
+                                      .AllowAnyHeader()
+                                      .AllowAnyMethod());
+
         app.AtividadesEndpoints();
         
         app.UseHttpsRedirection();              
@@ -42,6 +50,10 @@ public static class Bootstrap
         builder.Configuration.GetSection("ConnectionStrings").Bind(connectionStringsOptions);
 
         var databaseConnection = connectionStringsOptions.DatabaseConnection;
+        if (string.IsNullOrEmpty(databaseConnection))
+        {
+            throw new ArgumentException("Database connection string is not configured.");
+        }
 
         builder.Services.AddDbContext<DataContext>(options =>
             options.UseSqlServer(
@@ -62,8 +74,18 @@ public static class Bootstrap
         });
     }  
 
+    private static void ConfigureCors(WebApplicationBuilder builder)
+    {
+        builder.Services.AddCors();
+    }
+
     private class ConnectionStringsOptions
     {
         public string? DatabaseConnection { get; set; }
+    }
+
+    private class CorsOptions
+    {
+        public string[] AllowedOrigins { get; set; } = Array.Empty<string>();
     }     
 }
