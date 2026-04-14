@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import AtividadeForm from './components/AtividadeForm';
 import AtividadeLista from './components/AtividadeLista';
 import api from './api/atividade';
+import { useTheme } from './hooks/useTheme';
 
 function App() {
   const [showAtividadeModal, setShowAtividadeModal] = useState(false);
@@ -11,6 +12,8 @@ function App() {
   
   const [atividades, setAtividades] = useState([]);
   const [atividade, setAtividade] = useState({id:0});
+
+  const {theme , toggleTheme} = useTheme();
  
   const handleAtividadeModal = () => setShowAtividadeModal(!showAtividadeModal)
 
@@ -85,7 +88,7 @@ function App() {
         <h1 className='m-0 p-0'>Atividade {atividade.id !== 0 ? atividade.id : ''}</h1>
         <Button variant="outline-secondary" onClick={novaAtividade}>
            <i className='fas fa-plus align-items-center'></i>          
-        </Button>        
+        </Button>                 
       </div>
       
       <AtividadeLista
@@ -140,3 +143,17 @@ function App() {
 }
 
 export default App;
+
+
+/**
+ * Exemplo de aplicação do Tema utilizando o useContext e o hook customizado aqui estamos aplicando o estilo no botão mas pode ser aplicado no container do App
+ *         <button
+            onClick={toggleTheme}
+            style={{
+              background: theme === "dark" ? "#333" : "#eee",
+              color: theme === "dark" ? "#fff" : "#000"
+            }}        
+        >
+          Tema atual: {theme}
+        </button>     
+ */

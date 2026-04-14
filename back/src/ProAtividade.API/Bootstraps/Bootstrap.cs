@@ -1,8 +1,13 @@
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using ProAtividade.API.Data;
 using ProAtividade.API.Extensions;
+using ProAtividade.Data.Context;
+using ProAtividade.Data.Repositories;
+using ProAtividade.Domain.Entities;
+using ProAtividade.Domain.Interfaces.Repositories;
+using ProAtividade.Domain.Interfaces.Services;
+using ProAtividade.Domain.Services;
 
 namespace ProAtividade.API.Bootstraps;
 
@@ -60,6 +65,10 @@ public static class Bootstrap
                         databaseConnection,
                         y => y.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery))
                    .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
+
+        builder.Services.AddScoped<IAtividadeRepo, AtividadeRepo>();
+        builder.Services.AddScoped<IGeneralRepo, GeneralRepo>();
+        builder.Services.AddScoped<IAtividadeService, AtividadeService>();
     }
 
     private static void ConfigureSwagger(WebApplicationBuilder builder)
