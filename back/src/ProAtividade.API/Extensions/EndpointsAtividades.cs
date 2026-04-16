@@ -10,7 +10,7 @@ namespace ProAtividade.API.Extensions
     {
         public static void AtividadesEndpoints(this IEndpointRouteBuilder app)
         {
-            app.MapGet("/api/atividade", AtividadesHandlers.GetAtividade).WithOpenApi();
+            app.MapGet("/api/atividade", AtividadesHandlers.GetAtividade).WithOpenApi();  // conceito de minimal API
 
             app.MapGet("/api/atividade/{id}", AtividadesHandlers.GetAtividadeById).WithOpenApi();
 

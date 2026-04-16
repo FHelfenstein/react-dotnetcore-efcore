@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using ProAtividade.Domain.Entities;
 using ProAtividade.Domain.Interfaces.Repositories;
 using ProAtividade.Domain.Interfaces.Services;
@@ -60,7 +56,7 @@ namespace ProAtividade.Domain.Services
             if(model != null)
             {
                 model.Concluir();
-                _atividadeRepo.Atualizar<Atividade>(model);
+                _atividadeRepo.Atualizar(model);
                 return await _atividadeRepo.SalvarMudancasAsync();
             }
 
