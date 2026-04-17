@@ -13,10 +13,8 @@ root.render(
   <Router>
     <ThemeProvider>
       <Menu/>
-      <div className="container">
-        
-          <App />
-        
+      <div className="container">        
+          <App />        
       </div>      
     </ThemeProvider>    
   </Router>

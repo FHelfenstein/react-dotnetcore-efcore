@@ -6,13 +6,14 @@ import Dashboard from './pages/dashboard/Dashboard';
 import ClienteForm from './pages/clientes/ClienteForm';
 import PageNotFound from './pages/PageNotFound';
 
-export default function App() {
-
+ const App = () => {
   return (
     <>
       <Routes>
         <Route path='/' element={<Dashboard/>}></Route>
+        <Route path='/atividade/*' element={<Atividade/>}/>
         <Route path='/atividade/lista' element={<Atividade/>}/>        
+        <Route path='/cliente/*' element={<Cliente/>}/>
         <Route path='/cliente/lista' element={<Cliente/>}/>
         <Route path='/cliente/:id/atividade' element={<Atividade/>}/>
         <Route path='/cliente/detalhe' element={<ClienteForm/>}/>
@@ -22,4 +23,6 @@ export default function App() {
     </>          
   );
 }
+
+export default App;
 

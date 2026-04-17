@@ -1,34 +1,37 @@
-import React from 'react'
+import React from 'react';
+import {Prioridade} from '../../model/atividade';
+import { AtividadeItemProps } from '@/model/atividadesProps';
 
-function prioridadeLabel(param){
+const AtividadeItem : React.FC<AtividadeItemProps> = ({atv, pegarAtividade, handleConfirmModal} : AtividadeItemProps) => {
+
+  function prioridadeLabel(param: number){
     switch(param){
-      case 1:
-        return "Baixa";
-      case 2:
-        return "Normal";
-      case 3:
-        return "Alta";
+      case Prioridade.Baixa:
+        return 'Baixa';
+      case Prioridade.Normal:       
+        return 'Normal';
+      case Prioridade.Alta:
+        return 'Alta';
       default:
         return "Não definido"                ;
     }
   }
 
-  function prioridadeStyle(param, icone){
+  function prioridadeStyle(param : number, icone: boolean){
     switch(param){
-      case 1:
+      case Prioridade.Baixa:
         return icone ? "smile" : "success";
-      case 2:
+      case Prioridade.Normal:
         return icone ? "meh" : "dark";
-      case 3:
+      case Prioridade.Alta:
         return icone ? "frown" : "warning";
       default:
         return "Não definido"                ;
     }
   }
-
-export default function AtividadeItem({atv, pegarAtividade, handleConfirmModal}) {
+   
   return (
-    <div className={"card mb-2 shadow-sm border-" + prioridadeStyle(atv.prioridade)} >            
+    <div className={"card mb-2 shadow-sm border-" + prioridadeStyle(atv.prioridade,false)} >            
         <div className="card-body">
             <div className="d-flex justify-content-between">
                 <h5 className="card-title">
@@ -36,7 +39,7 @@ export default function AtividadeItem({atv, pegarAtividade, handleConfirmModal})
                 </h5>
                 <h6>
                     Prioridade:       
-                    <span className={'ms-1 text-'+ prioridadeStyle(atv.prioridade)}>
+                    <span className={'ms-1 text-'+ prioridadeStyle(atv.prioridade,false)}>
                       <i className={"me-1 far fa-" + prioridadeStyle(atv.prioridade,true)}></i>
                       {prioridadeLabel(atv.prioridade)}
                     </span>                              
@@ -59,3 +62,5 @@ export default function AtividadeItem({atv, pegarAtividade, handleConfirmModal})
     </div>
   )
 }
+
+export default AtividadeItem;

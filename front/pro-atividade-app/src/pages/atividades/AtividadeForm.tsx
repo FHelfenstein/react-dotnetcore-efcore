@@ -1,50 +1,57 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { AtividadeFormProps } from '@/model/atividadesProps';
+import { IAtividade, Prioridade } from '../../model/atividade';
 
-const atividadeInicial = {
-    id: 0,
-    titulo: "",
-    prioridade: 0,
-    descricao: ""
+const atividadeInicial : IAtividade = {
+        id: 0,
+        titulo: "",
+        prioridade: Prioridade.NaoDefinido,
+        descricao: ""
 }
 
-export default function AtividadeForm(props) {
-    const [atividade, setAtividade] = useState(atividadeAtual());
+const AtividadeForm: React.FC<AtividadeFormProps> = ({
+        ativSelecionada, 
+        atualizarAtividade, 
+        addAtividade, 
+        cancelarAtividade
+    } : AtividadeFormProps) => { 
+    const [atividade, setAtividade] = useState<IAtividade>(atividadeAtual());
 
     useEffect( () => {
-        if(props.ativSelecionada.id !== 0)
-            setAtividade(props.ativSelecionada);    
-    },[props.ativSelecionada])
+        if(ativSelecionada.id !== 0)
+            setAtividade(ativSelecionada);    
+    },[ativSelecionada])
     
-    const inputTextHandler = (e) => {
+    const handleValue = (e: any) => {
         const {name, value} = e.target;
         setAtividade({...atividade, [name]: value, [name]: name === "prioridade" ? Number(value) : value });
     }
 
-    function atividadeAtual() {
-        if (props.ativSelecionada.id !== 0){
-            return props.ativSelecionada;
+    function atividadeAtual() : IAtividade {
+        if (ativSelecionada.id !== 0){
+            return ativSelecionada;
         }
         else {
             return atividadeInicial;
         }
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: any) => {
         e.preventDefault();
 
-        if (props.ativSelecionada.id !== 0){
-            props.atualizarAtividade(atividade);
+        if (ativSelecionada.id !== 0){
+            atualizarAtividade(atividade);
 
         }else {
-            props.addAtividade(atividade);
+            addAtividade(atividade);
         }
         setAtividade(atividadeInicial);        
     }
 
-    const handleCancelar = (e) => {
+    const handleCancelar = (e: any) => {
         e.preventDefault();
 
-        props.cancelarAtividade()
+        cancelarAtividade()
         setAtividade(atividadeInicial);        
     }
     
@@ -60,7 +67,7 @@ export default function AtividadeForm(props) {
                         type="text" 
                         className="form-control" 
                         id="titulo" 
-                        onChange={inputTextHandler}
+                        onChange={handleValue}
                         value={atividade.titulo}
                     />
                 </div>                    
@@ -72,7 +79,7 @@ export default function AtividadeForm(props) {
                         name="prioridade" 
                         id="prioridade" 
                         className="form-select" 
-                        onChange={inputTextHandler} 
+                        onChange={handleValue} 
                         value={atividade.prioridade}
                     >
                         <option defaultValue={0}>Selecione...</option>
@@ -87,10 +94,9 @@ export default function AtividadeForm(props) {
                     </label>
                     <textarea 
                         name="descricao"
-                        type="text" 
                         className="form-control" 
                         id="descricao" 
-                        onChange={inputTextHandler}
+                        onChange={handleValue}
                         value={atividade.descricao}
                     />
                     <hr/> 
@@ -123,3 +129,5 @@ export default function AtividadeForm(props) {
         </>  
     )
 }
+
+export default AtividadeForm;

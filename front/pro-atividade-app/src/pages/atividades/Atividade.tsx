@@ -4,26 +4,32 @@ import AtividadeForm from './AtividadeForm';
 import AtividadeLista from './AtividadeLista';
 import api from '../../api/atividade';
 import TitlePage from '../../components/TitlePage';
-//import { useTheme } from './hooks/useTheme';
+import { IAtividade, Prioridade } from '../../model/atividade';
 
-export default function Atividade() {
+const atividadeInicial : IAtividade = {
+        id: 0,
+        titulo: "",
+        prioridade: Prioridade.NaoDefinido,
+        descricao: ""
+}
+
+ const AtividadeInit = () => {
   const [showAtividadeModal, setShowAtividadeModal] = useState(false);
   const [smShowConfirmModal, setSmShowConfirmModal] = useState(false);
   
-  const [atividades, setAtividades] = useState([]);
-  const [atividade, setAtividade] = useState({id:0});
-//const {theme , toggleTheme} = useTheme();
+  const [atividades, setAtividades] = useState<IAtividade[]>([]);
+  const [atividade, setAtividade] = useState<IAtividade>(atividadeInicial);
  
   const handleAtividadeModal = () => setShowAtividadeModal(!showAtividadeModal)
 
-  const handleConfirmModal = (id) => 
+  const handleConfirmModal = (id: number) => 
   {
-    if(id !== 0 && id !=='undefined'){
+    if(id !== 0 ){
       const atividade = atividades.filter(atv => atv.id === id)
       setAtividade(atividade[0]);
     }
     else {
-      setAtividade({id: 0});
+      setAtividade(atividadeInicial);
     }
     setSmShowConfirmModal(!smShowConfirmModal)
   };
@@ -34,7 +40,7 @@ export default function Atividade() {
   }
 
   const novaAtividade = () => {
-    setAtividade({id: 0});
+    setAtividade(atividadeInicial);
     handleAtividadeModal();
   }
 
@@ -46,23 +52,23 @@ export default function Atividade() {
     getAtividades();
   },[]);
 
-  const addAtividade = async (ativ) => {   
+  const addAtividade = async (ativ: IAtividade) => {   
     const response = await api.post('atividade', ativ);
     
     setAtividades([...atividades, { ...response.data } ]);
     handleAtividadeModal();
   }
 
-  const atualizarAtividade = async (ativ) => {
+  const atualizarAtividade = async (ativ: IAtividade) => {
     const response = await api.put(`atividade/${ativ.id}`, ativ);
     const {id} = response.data;
   
     setAtividades(atividades.map(item => item.id === id ? response.data : item));
-    setAtividade({id: 0});
+    setAtividade(atividadeInicial);
     handleAtividadeModal();
   }
 
-  const deletarAtividade = async (id) => {
+  const deletarAtividade = async (id: number) => {
     handleConfirmModal(0);
     if (await api.delete(`atividade/${id}`)){
       const atividadesFiltradas = atividades.filter(x => x.id !== id);      
@@ -70,14 +76,14 @@ export default function Atividade() {
     };
   } 
 
-  const pegarAtividade = (id) => {
+  const pegarAtividade = (id: number) => {
       const atividade = atividades.filter(atv => atv.id === id);
       setAtividade(atividade[0]);
       handleAtividadeModal();    
   }
 
   const cancelarAtividade = () => {
-    setAtividade({id: 0});
+    setAtividade(atividadeInicial);
     handleAtividadeModal();
   }
 
@@ -97,7 +103,7 @@ export default function Atividade() {
       />
 
       <Modal show={showAtividadeModal} onHide={handleAtividadeModal}>
-        <Modal.Header closeButton onClick={() => setAtividade({id: 0})}>
+        <Modal.Header closeButton onClick={() => setAtividade(atividadeInicial)}>
           <Modal.Title>
             Atividade {atividade.id !== 0 ? atividade.id : ''}
           </Modal.Title>
@@ -108,7 +114,6 @@ export default function Atividade() {
             atualizarAtividade={atualizarAtividade}
             cancelarAtividade={cancelarAtividade}
             ativSelecionada={atividade}
-            atividades={atividades}
           />          
         </Modal.Body>        
       </Modal>
@@ -137,17 +142,4 @@ export default function Atividade() {
   );
 }
 
-
-
-/**
- * Exemplo de aplicação do Tema utilizando o useContext e o hook customizado aqui estamos aplicando o estilo no botão mas pode ser aplicado no container do App
- *         <button
-            onClick={toggleTheme}
-            style={{
-              background: theme === "dark" ? "#333" : "#eee",
-              color: theme === "dark" ? "#fff" : "#000"
-            }}        
-        >
-          Tema atual: {theme}
-        </button>     
- */
+export default AtividadeInit;
